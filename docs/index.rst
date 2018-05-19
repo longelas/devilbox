@@ -65,6 +65,9 @@ host is ready to be served with your custom domain.
    :maxdepth: 2
    :caption: Tutorials
 
+   tutorials/communicating-with-external-hosts
+   tutorials/add-your-own-docker-image
+   tutorials/overwrite-existing-docker-image
    tutorials/adding-subdomains
    tutorials/configure-database-in-your-project
    tutorials/change-document-root
@@ -88,10 +91,12 @@ host is ready to be served with your custom domain.
    examples/setup-joomla
    examples/setup-laravel
    examples/setup-phalcon
+   examples/setup-photon-cms
    examples/setup-symfony
    examples/setup-wordpress
    examples/setup-yii
    examples/setup-zend
+   examples/setup-other-frameworks
 
 
 .. toctree::
@@ -107,16 +112,8 @@ host is ready to be served with your custom domain.
    :caption: Global configuration
    :maxdepth: 2
 
-   configuration-global/webserver
-   configuration-global/php
-   configuration-global/mysql
-   configuration-global/mongodb
-   configuration-global/redis
-   configuration-global/memcached
-   configuration-global/bind
-   configuration-global/devilbox-intranet
+   configuration-global/https-ssl
    configuration-global/auto-dns
-   configuration-global/logging
 
 
 .. toctree::
@@ -124,6 +121,8 @@ host is ready to be served with your custom domain.
    :maxdepth: 2
 
    configuration-files/env-file
+   configuration-files/docker-compose-yml
+   configuration-files/docker-compose-override-yml
    configuration-files/apache-conf
    configuration-files/nginx-conf
    configuration-files/php-ini
@@ -158,7 +157,6 @@ host is ready to be served with your custom domain.
 
    support/faq
    support/troubleshooting
-   support/hacking
    support/contributing
    support/blogs-videos-and-use-cases
    support/artwork

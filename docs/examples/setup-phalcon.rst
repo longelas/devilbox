@@ -74,7 +74,7 @@ It will be ready in six simple steps:
 
 .. code-block:: bash
 
-    devilbox@php-7.0.20 in /shared/httpd/my-pahlcon $ ln -s phalconphp/public/ htdocs
+    devilbox@php-7.0.20 in /shared/httpd/my-phalcon $ ln -s phalconphp/public/ htdocs
 
 
 5. DNS record

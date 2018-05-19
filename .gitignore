@@ -19,6 +19,12 @@
 /data/*
 /backups/*
 
+# Ignore Certificate Authority
+/ca/*
+
+# Ignore compose override file
+docker-compose.override.yml
+
 # Ignore custom HTTPD configs
 /cfg/apache-2.2/*.conf
 /cfg/apache-2.4/*.conf

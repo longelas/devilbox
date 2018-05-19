@@ -21,7 +21,9 @@
 [![type](https://img.shields.io/badge/type-Docker-orange.svg)](https://www.docker.com/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-The devilbox is a modern and highly customisable **dockerized PHP stack** supporting full **LAMP** and **MEAN** and running on all major platforms. The main goal is to easily switch and combine any version required for local development. It supports an unlimited number of projects for which vhosts and DNS records are created automatically. Email catch-all and popular development tools will be at your service as well.  Configuration is not necessary, as everything is pre-setup with mass virtual hosting.
+<img width="200" style="width:200px;" src="docs/_static/img/global-configuration/https-ssl-address-bar.png" />
+
+The devilbox is a modern and highly customisable **dockerized PHP stack** supporting full **LAMP** and **MEAN** and running on all major platforms. The main goal is to easily switch and combine any version required for local development. It supports an **unlimited number of projects** for which vhosts, **SSL certificates** and **DNS records** are created automatically. Email catch-all and popular development tools will be at your service as well.  Configuration is not necessary, as everything is pre-setup with mass virtual hosting.
 
 **Requirements**
 
@@ -33,12 +35,14 @@ The devilbox is a modern and highly customisable **dockerized PHP stack** suppor
 
 ## Community
 
+Find documentation and help here
+
 <table width="100%" style="width:100%; display:table;">
  <thead>
   <tr>
-   <th width="33%" style="width:33%;">Documentation</th>
-   <th width="33%" style="width:33%;">Chat</th>
-   <th width="33%" style="width:33%;">Forum</th>
+   <th width="33%" style="width:33%;"><h3><a href="https://devilbox.readthedocs.io" >Documentation</a></h3></th>
+   <th width="33%" style="width:33%;"><h3><a href="https://gitter.im/devilbox/Lobby" >Chat</a></h3></th>
+   <th width="33%" style="width:33%;"><h3>Forum</h3></th>
   </tr>
  </thead>
  <tbody style="vertical-align: middle; text-align: center;">
@@ -120,7 +124,7 @@ Every single attachable container comes with many different versions. In order t
     <tr>
       <td><a target="_blank" title="Apache 2.2"       href="https://github.com/devilbox/docker-apache-2.2">2.2</a></td>
       <td><a target="_blank" title="Nginx stable"     href="https://github.com/devilbox/docker-nginx-stable">stable</a></td>
-      <td><a target="_blank" title="PHP 5.4"          href="https://github.com/devilbox/docker-php-fpm">5.4</a></td>
+      <td><a target="_blank" title="PHP 5.3"          href="https://github.com/devilbox/docker-php-fpm">5.3</a></td>
       <td><a target="_blank" title="MySQL 5.5"        href="https://github.com/cytopia/docker-mysql-5.5">5.5</a></td>
       <td><a target="_blank" title="MariaDB 5.5"      href="https://github.com/cytopia/docker-mariadb-5.5">5.5</a></td>
       <td><a target="_blank" title="PerconaDB 5.5"    href="https://github.com/cytopia/docker-percona-5.5">5.5</a></td>
@@ -132,7 +136,7 @@ Every single attachable container comes with many different versions. In order t
     <tr>
       <td><a target="_blank" title="Apache 2.4"       href="https://github.com/devilbox/docker-apache-2.4">2.4</a></td>
       <td><a target="_blank" title="Nginx mainline"   href="https://github.com/devilbox/docker-nginx-mainline">mainline</a></td>
-      <td><a target="_blank" title="PHP 5.5"          href="https://github.com/devilbox/docker-php-fpm">5.5</a></td>
+      <td><a target="_blank" title="PHP 5.4"          href="https://github.com/devilbox/docker-php-fpm">5.4</a></td>
       <td><a target="_blank" title="MySQL 5.6"        href="https://github.com/cytopia/docker-mysql-5.6">5.6</a></td>
       <td><a target="_blank" title="MariaDB 10.0"     href="https://github.com/cytopia/docker-mariadb-10.0">10.0</a></td>
       <td><a target="_blank" title="PerconaDB 5.6"    href="https://github.com/cytopia/docker-percona-5.6">5.6</a></td>
@@ -144,7 +148,7 @@ Every single attachable container comes with many different versions. In order t
     <tr>
       <td></td>
       <td></td>
-      <td><a target="_blank" title="PHP 5.6"          href="https://github.com/devilbox/docker-php-fpm">5.6</a></td>
+      <td><a target="_blank" title="PHP 5.5"          href="https://github.com/devilbox/docker-php-fpm">5.5</a></td>
       <td><a target="_blank" title="MySQL 5.7"        href="https://github.com/cytopia/docker-mysql-5.7">5.7</a></td>
       <td><a target="_blank" title="MariaDB 10.1"     href="https://github.com/cytopia/docker-mariadb-10.1">10.1</a></td>
       <td><a target="_blank" title="PerconaDB 5.7"    href="https://github.com/cytopia/docker-percona-5.7">5.7</a></td>
@@ -156,7 +160,7 @@ Every single attachable container comes with many different versions. In order t
     <tr>
       <td></td>
       <td></td>
-      <td><a target="_blank" title="PHP 7.0"          href="https://github.com/devilbox/docker-php-fpm">7.0</a></td>
+      <td><a target="_blank" title="PHP 5.6"          href="https://github.com/devilbox/docker-php-fpm">5.6</a></td>
       <td><a target="_blank" title="MySQL 8.0"        href="https://github.com/cytopia/docker-mysql-8.0">8.0</a></td>
       <td><a target="_blank" title="MariaDB 10.2"     href="https://github.com/cytopia/docker-mariadb-10.2">10.2</a></td>
       <td></td>
@@ -168,7 +172,7 @@ Every single attachable container comes with many different versions. In order t
     <tr>
       <td></td>
       <td></td>
-      <td><a target="_blank" title="PHP 7.1"          href="https://github.com/devilbox/docker-php-fpm">7.1</a></td>
+      <td><a target="_blank" title="PHP 7.0"          href="https://github.com/devilbox/docker-php-fpm">7.0</a></td>
       <td></td>
       <td><a target="_blank" title="MariaDB 10.3"     href="https://github.com/cytopia/docker-mariadb-10.3">10.3</a></td>
       <td></td>
@@ -180,7 +184,7 @@ Every single attachable container comes with many different versions. In order t
     <tr>
       <td></td>
       <td></td>
-      <td><a target="_blank" title="PHP 7.2"          href="https://github.com/devilbox/docker-php-fpm">7.2</a></td>
+      <td><a target="_blank" title="PHP 7.1"          href="https://github.com/devilbox/docker-php-fpm">7.1</a></td>
       <td></td>
       <td></td>
       <td></td>
@@ -192,13 +196,25 @@ Every single attachable container comes with many different versions. In order t
     <tr>
       <td></td>
       <td></td>
-      <td></td>
+      <td><a target="_blank" title="PHP 7.2"          href="https://github.com/devilbox/docker-php-fpm">7.2</a></td>
       <td></td>
       <td></td>
       <td></td>
       <td><a target="_blank" title="PgSQL 10.0"       href="https://github.com/docker-library/postgres">10.0</a></td>
       <td></td>
       <td><a target="_blank" title="Memcached latest" href="https://github.com/docker-library/memcached">latest</a></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td><a target="_blank" title="PHP 7.3"          href="https://github.com/devilbox/docker-php-fpm">7.3</a></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
       <td></td>
     </tr>
   </tbody>
@@ -238,6 +254,10 @@ The devilbox has everything setup for you. The only thing you will have to insta
   <tr>
     <td width="220" style="width:220px;">:star: Auto virtual hosts</td>
     <td>New virtual hosts are created automatically and instantly whenever you add a project directory. This is done internally via <a href="https://travis-ci.org/devilbox/vhost-gen">vhost-gen</a> and <a href="https://github.com/devilbox/watcherd">watcherd</a>.</td>
+  </tr>
+  <tr>
+    <td>:star: Automated SSL certificate generation</td>
+    <td>SSL certificates are automatically created for each vhost and signed by the Devilbox CA.</td>
   </tr>
   <tr>
     <td>:star: Unlimited vhosts</td>

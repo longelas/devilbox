@@ -87,6 +87,29 @@ TLD_SUFFIX=loc
 
 
 ###
+### Optional DNS configuration
+### Allows you to add extra DNS records (above the wildcard entry)
+### Useful if your host computer run other Docker services that you want to connect to or reach
+### from within the Devilbox network by a custom hostname.
+###
+### Format:
+### -------
+### Resolve any custom defined hostname to an IP address (useable inside container and host os)
+###     EXTRA_HOSTS=<hostname>=<ip>[,<hostname>=<ip>]
+###
+### Resolve any custom defined hostname to whatever IP address a CNAME resolves to
+### (Useable inside the container and host OS).
+### Note: CNAME must be resolvable by Google DNS
+###     EXTRA_HOSTS=<hostname>=<CNAME>[,<hostname>=<CNAME>]
+###
+### Examples:
+### ---------
+### EXTRA_HOSTS=hostname.loc=1.2.3.4
+### EXTRA_HOSTS=host.loc=1.2.3.4,host.example.org=3.4.5.6
+EXTRA_HOSTS=
+
+
+###
 ### Set your user id and group id
 ###
 ### This should be changed to the value of your local
@@ -126,6 +149,22 @@ TIMEZONE=Europe/Berlin
 DNS_CHECK_TIMEOUT=1
 
 
+
+###
+### Devilbox UI SSL Certificate generation
+###
+### When using SSL each certificate requires names for which it is responsible:
+### Common Name as well as alternative names.
+###
+### Specify comma separated hostnames below by which you want to access the Devilbox.
+### Those hostnames will be included in the SSL certificate for the Devilbox intranet.
+### This has nothing to do for SSL certificates for projects, it is just for the intranet
+### itself.
+###
+DEVILBOX_UI_SSL_CN=localhost,*.localhost,devilbox,*.devilbox
+
+
+
 ###
 ### Devilbox UI Password protection enable/disable (1/0)
 ###
@@ -157,13 +196,13 @@ DEVILBOX_UI_PASSWORD=password
 
 
 ###
-### Disable the Devilbox Intranet?
+### Enable the Devilbox Intranet?
 ###
 ### Example:
-###   DEVILBOX_UI_DISABLE=1
-###   DEVILBOX_UI_DISABLE=0
+###   DEVILBOX_UI_ENABLE=1
+###   DEVILBOX_UI_ENABLE=0
 ###
-DEVILBOX_UI_DISABLE=0
+DEVILBOX_UI_ENABLE=1
 
 
 
@@ -182,12 +221,14 @@ DEVILBOX_UI_DISABLE=0
 ###
 ### 1.1 Choose PHP Server Image
 ###
+#PHP_SERVER=5.3
 #PHP_SERVER=5.4
 #PHP_SERVER=5.5
 #PHP_SERVER=5.6
 #PHP_SERVER=7.0
 #PHP_SERVER=7.1
 PHP_SERVER=7.2
+#PHP_SERVER=7.3
 
 
 ###
@@ -387,6 +428,7 @@ HOST_PATH_MONGO_DATADIR=./data/mongo
 ### Expose HTTPD Port to Host
 ###
 HOST_PORT_HTTPD=80
+HOST_PORT_HTTPD_SSL=443
 
 ###
 ### Document Root Subdirectory
@@ -419,10 +461,10 @@ HTTPD_TEMPLATE_DIR=.devilbox
 ###
 ### MySQL root user password
 ###
-### If $HOST_PATH_TO_MYSQL_DATADIR already contains an existing
+### If $HOST_PATH_MYSQL_DATADIR already contains an existing
 ### mysql datadir, enter the password for the existing mysql database
 ###
-### If $HOST_PATH_TO_MYSQL_DATADIR is empty, choose a new password that
+### If $HOST_PATH_MYSQL_DATADIR is empty, choose a new password that
 ### will be applied
 ###
 MYSQL_ROOT_PASSWORD=
@@ -430,7 +472,7 @@ MYSQL_ROOT_PASSWORD=
 ###
 ### Custom MySQL Runtime Settings
 ###
-MYSQL_GENERAL_LOG=1
+MYSQL_GENERAL_LOG=0
 
 ###
 ### Expose MySQL Port to Host
@@ -517,6 +559,35 @@ HOST_PORT_BIND=1053
 ### You can also add DNS servers from your LAN (if any are available)
 ###
 BIND_DNS_RESOLVER=8.8.8.8,8.8.4.4
+
+###
+### Validate DNSSEC
+###
+### Values:
+###  no:    DNSSEC validation is disabled
+###  yes:   DNSSEC validation is enabled, but a trust anchor must be manually configured.
+###  auto:  DNSSEC validation is enabled, and a default trust anchor for root zone is used.
+###
+BIND_DNSSEC_VALIDATE=no
+
+###
+### Bind timing options (time in seconds)
+###
+### Leave empty for defaults.
+### Only change when you know what you are doing.
+###
+BIND_TTL_TIME=
+BIND_REFRESH_TIME=
+BIND_RETRY_TIME=
+BIND_EXPIRY_TIME=
+BIND_MAX_CACHE_TIME=
+
+###
+### Show DNS Queries in Docker logs output?
+###
+### 1: Yes
+### 0: No
+BIND_LOG_DNS_QUERIES=0
 
 
 

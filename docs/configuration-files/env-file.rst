@@ -245,6 +245,76 @@ this project visible to everyone in your corporate LAN.
     and
     `Docker Release notes <https://docs.docker.com/docker-for-mac/release-notes/#docker-community-edition-17120-ce-mac46-2018-01-09>`_
 
+.. _env_extra_hosts:
+
+EXTRA_HOSTS
+-----------
+
+This variable allows you to add additional DNS entries from hosts outside the Devilbox network,
+such as hosts running on your host operating system, the LAN or from the internet.
+
++-----------------+------------------------------+---------------+
+| Name            | Allowed values               | Default value |
++=================+==============================+===============+
+| ``EXTRA_HOSTS`` | comma separated host mapping | empty         |
++-----------------+------------------------------+---------------+
+
+Adding hosts can be done in two ways:
+
+1. Add DNS entry for an IP address
+2. Add DNS entry for a hostname/CNAME which will be mapped to whatever IP address it will resolve
+
+
+The general structure to add extra hosts looks like this
+
+.. code-block:: bash
+
+    # Single host
+    EXTRA_HOSTS='hostname=1.1.1.1'
+    EXTRA_HOSTS='hostname=CNAME'
+
+    # Multiple hosts
+    EXTRA_HOSTS='hostname1=1.1.1.1,hostname2=2.2.2.2'
+    EXTRA_HOSTS='hostname1=CNAME1,hostname2=CNAME2'
+
+* The left side represents the name by which the host will be available by
+* The right side represents the IP address by which the new name will resolve to
+* If the right side is a CNAME itself, it will be first resolved to an IP address and then the left side will resolve to that IP address.
+
+A few examples for adding extra hosts:
+
+.. code-block:: bash
+
+    # 1. One entry:
+    # The following extra host 'loc' is added and will always point to 192.168.0.7.
+    # When reverse resolving '192.168.0.7' it will answer with 'tld'.
+    EXTRA_HOSTS='loc=192.168.0.7'
+
+    # 2. One entry:
+    # The following extra host 'my.host.loc' is added and will always point to 192.168.0.9.
+    # When reverse resolving '192.168.0.9' it will answer with 'my.host'.
+    EXTRA_HOSTS='my.host.loc=192.168.0.9'
+
+    # 3. Two entries:
+    # The following extra host 'tld' is added and will always point to 192.168.0.1.
+    # When reverse resolving '192.168.0.1' it will answer with 'tld'.
+    # A second extra host 'example.org' is added and always redirects to 192.168.0.2
+    # When reverse resolving '192.168.0.2' it will answer with 'example.org'.
+    EXTRA_HOSTS='tld=192.168.0.1,example.org=192.168.0.2'
+
+    # 4. Using CNAME's for resolving:
+    # The following extra host 'my.host' is added and will always point to whatever
+    # IP example.org resolves to.
+    # When reverse resolving '192.168.0.1' it will answer with 'my.host'.
+    EXTRA_HOSTS='my.host=example.org'
+
+.. seealso::
+
+    This resembles the feature of `Docker Compose: extra_hosts <https://docs.docker.com/compose/compose-file/#external_links>`_ to add external links.
+
+.. seealso:: :ref:`communicating_with_external_hosts`
+
+
 .. _env_new_uid:
 
 NEW_UID
@@ -353,6 +423,36 @@ and report as unsuccessful. The default is ``1`` second, wich should be fairly s
 +-----------------------+----------------+-------------------+
 
 
+.. _env_devilbox_ui_ssl_cn:
+
+DEVILBOX_UI_SSL_CN
+------------------
+
+When accessing the Devilbox intranet via ``https`` it will use an automatically created SSL certificate.
+Each SSL certificate requires a valid Common Name, which must match the virtual host name.
+
+This setting let's you specify by what **name** you are accessing the Devilbox intranet.
+The default is ``localhost``, but if you have created your own alias, you must change this value
+accordingly. Also note that multiple values are possible and must be separated with a comma.
+When you add an asterisk (``*.``) to the beginning, it means it will create a wildcard certificate for that
+hostname.
+
++-------------------------+------------------------------+-----------------------------------------------+
+| Name                    | Allowed values               | Default value                                 |
++=========================+==============================+===============================================+
+| ``DEVILBOX_UI_SSL_CN``  | comma separated list of CN's | ``localhost,*.localhost,devilbox,*.devilbox`` |
++-------------------------+------------------------------+-----------------------------------------------+
+
+**Examples**:
+
+* ``DEVILBOX_UI_SSL_CN=localhost``
+* ``DEVILBOX_UI_SSL_CN=localhost,*.localhost``
+* ``DEVILBOX_UI_SSL_CN=localhost,*.localhost,devilbox,*.devilbox``
+* ``DEVILBOX_UI_SSL_CN=intranet.example.com``
+
+.. seealso:: :ref:`configuration_https_ssl`
+
+
 .. _env_devilbox_ui_protect:
 
 DEVILBOX_UI_PROTECT
@@ -388,13 +488,13 @@ password by which it will be protected.
 +--------------------------+----------------+-------------------+
 
 
-.. _env_devilbox_ui_disable:
+.. _env_devilbox_ui_enable:
 
-DEVILBOX_UI_DISABLE
+DEVILBOX_UI_ENABLE
 -------------------
 
 In case you want to completely disable the Devilbox intranet, such as when running it on production,
-you need to set this variable to ``1``.
+you need to set this variable to ``0``.
 
 By disabling the intranet, the webserver will simply remove the default virtual host and redirect
 all IP-based requests to the first available virtual host, which will be you first project when
@@ -403,7 +503,7 @@ ordering their names alphabetically.
 +-------------------------+----------------+-------------------+
 | Name                    | Allowed values | Default value     |
 +=========================+================+===================+
-| ``DEVILBOX_UI_DISABLE`` | ``0`` or ``1`` | ``0``             |
+| ``DEVILBOX_UI_ENABLE``  | ``0`` or ``1`` | ``1``             |
 +-------------------------+----------------+-------------------+
 
 
@@ -424,11 +524,11 @@ PHP_SERVER
 
 This variable choses your desired PHP-FPM version to be started.
 
-+-------------------------+--------------------------------------------------------------------------------------------------------------------------+-----------------+
-| Name                    | Allowed values                                                                                                           | Default value   |
-+=========================+==========================================================================================================================+=================+
-| ``PHP_SERVER``          | ``php-fpm-5.4`` |br| ``php-fpm-5.5`` |br| ``php-fpm-5.6`` |br| ``php-fpm-7.0`` |br| ``php-fpm-7.1`` |br| ``php-fpm-7.2`` | ``php-fpm-7.1`` |
-+-------------------------+--------------------------------------------------------------------------------------------------------------------------+-----------------+
++-------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------+
+| Name                    | Allowed values                                                                                                                                                     | Default value   |
++=========================+====================================================================================================================================================================+=================+
+| ``PHP_SERVER``          | ``php-fpm-5.3`` |br| ``php-fpm-5.4`` |br| ``php-fpm-5.5`` |br| ``php-fpm-5.6`` |br| ``php-fpm-7.0`` |br| ``php-fpm-7.1`` |br| ``php-fpm-7.2`` |br| ``php-fpm-7.2`` | ``php-fpm-7.1`` |
++-------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------+
 
 All values are already available in the ``.env`` file and just need to be commented or uncommented. If multiple values are uncommented, the last uncommented variable one takes precedences:
 
@@ -439,6 +539,7 @@ All values are already available in the ``.env`` file and just need to be commen
 
    host> grep PHP_SERVER .env
 
+   #PHP_SERVER=php-fpm-5.3
    #PHP_SERVER=php-fpm-5.4
    #PHP_SERVER=php-fpm-5.5
    #PHP_SERVER=php-fpm-5.6
@@ -446,7 +547,6 @@ All values are already available in the ``.env`` file and just need to be commen
    PHP_SERVER=php-fpm-7.1
    #PHP_SERVER=php-fpm-7.2
    #PHP_SERVER=php-fpm-7.3
-   #PHP_SERVER=hhvm-latest
 
 
 .. _env_httpd_server:
@@ -920,6 +1020,19 @@ else if 80 is already in use on your host operating system.
 +----------------------+-------------------+------------------+
 
 
+HOST_PORT_HTTPD_SSL
+-------------------
+
+The port to expose for the web server (Apache or Nginx) for HTTPS (SSL) requests. This is usually
+443. Set it to something else if 443 is already in use on your host operating system.
+
++--------------------------+-------------------+------------------+
+| Name                     | Allowed values    | Default value    |
++==========================+===================+==================+
+| ``HOST_PORT_HTTPD_SSL``  | ``1`` - ``65535`` | ``443``           |
++--------------------------+-------------------+------------------+
+
+
 HOST_PORT_MYSQL
 ---------------
 
@@ -1267,7 +1380,7 @@ As the Devilbox is intended to be used for development, this feature is turned o
 +-------------------------+-------------------+---------------------+
 | Name                    | Allowed values    | Default value       |
 +=========================+===================+=====================+
-| ``MYSQL_GENERAL_LOG``   | ``0`` or ``1``    | ``1``               |
+| ``MYSQL_GENERAL_LOG``   | ``0`` or ``1``    | ``0``               |
 +-------------------------+-------------------+---------------------+
 
 **MySQL documentation:**
@@ -1335,10 +1448,121 @@ Auto-DNS) in order to resolve custom project domains defined by ``TLD_SUFFIX``.
 To also be able to reach the internet from within the Container there must be some kind of
 upstream DNS server to ask for queries.
 
+Some examples:
+
+.. code-block:: bash
+
+    BIND_DNS_RESOLVER='8.8.8.8'
+    BIND_DNS_RESOLVER='8.8.8.8,192.168.0.10'
+
+
 .. note::
     If you don't trust the Google DNS server, then set it to something else.
     If you already have a DNS server inside your LAN and also want your custom DNS (if any)
     to be available inside the containers, set the value to its IP address.
+
+
+BIND_DNSSEC_VALIDATE
+^^^^^^^^^^^^^^^^^^^^
+
+This variable controls the DNSSEC validation of the DNS server. By default it is turned off.
+
++--------------------------+--------------------------------------+---------------------+
+| Name                     | Allowed values                       | Default value       |
++==========================+======================================+=====================+
+| ``BIND_DNSSEC_VALIDATE`` | ``no``, ``auto``, ``yes``            | ``no``              |
++--------------------------+--------------------------------------+---------------------+
+
+* ``yes`` - DNSSEC validation is enabled, but a trust anchor must be manually configured. No validation will actually take place.
+* ``no`` - DNSSEC validation is disabled, and recursive server will behave in the "old fashioned" way of performing insecure DNS lookups, until you have manually configured at least one trusted key.
+* ``auto`` - DNSSEC validation is enabled, and a default trust anchor (included as part of BIND) for the DNS root zone is used.
+
+BIND_LOG_DNS
+^^^^^^^^^^^^
+
+This variable controls if DNS queries should be shown in Docker log output or not. By default no
+DNS queries are shown.
+
++--------------------------+------------------------+---------------------+
+| Name                     | Allowed values         | Default value       |
++==========================+========================+=====================+
+| ``BIND_LOG_DNS``         | ``1`` or ``0``         | ``0``               |
++--------------------------+------------------------+---------------------+
+
+If enabled all DNS queries are shown. This is useful for debugging.
+
+
+BIND_TTL_TIME
+^^^^^^^^^^^^^
+
+This variable controls the DNS TTL in seconds. If empty or removed it will fallback to a sane default.
+
++--------------------------+----------------------+---------------------+
+| Name                     | Allowed values       | Default value       |
++==========================+======================+=====================+
+| ``BIND_TTL_TIME``        | integer              | empty               |
++--------------------------+----------------------+---------------------+
+
+.. seealso::
+
+    * `BIND TTL <http://www.zytrax.com/books/dns/apa/ttl.html>`_
+    * `BIND SOA <http://www.zytrax.com/books/dns/ch8/soa.html>`_
+
+BIND_REFRESH_TIME
+^^^^^^^^^^^^^^^^^
+
+This variable controls the DNS Refresh time in seconds. If empty or removed it will fallback to a sane default.
+
++--------------------------+----------------------+---------------------+
+| Name                     | Allowed values       | Default value       |
++==========================+======================+=====================+
+| ``BIND_REFRESH_TIME``    | integer              | empty               |
++--------------------------+----------------------+---------------------+
+
+.. seealso:: `BIND SOA <http://www.zytrax.com/books/dns/ch8/soa.html>`_
+
+BIND_RETRY_TIME
+^^^^^^^^^^^^^^^
+
+This variable controls the DNS Retry time in seconds. If empty or removed it will fallback to a sane default.
+
++--------------------------+----------------------+---------------------+
+| Name                     | Allowed values       | Default value       |
++==========================+======================+=====================+
+| ``BIND_RETRY_TIME``      | integer              | empty               |
++--------------------------+----------------------+---------------------+
+
+.. seealso:: `BIND SOA <http://www.zytrax.com/books/dns/ch8/soa.html>`_
+
+BIND_EXPIRY_TIME
+^^^^^^^^^^^^^^^^
+
+This variable controls the DNS Expiry time in seconds. If empty or removed it will fallback to a sane default.
+
++--------------------------+----------------------+---------------------+
+| Name                     | Allowed values       | Default value       |
++==========================+======================+=====================+
+| ``BIND_EXPIRY_TIME``     | integer              | empty               |
++--------------------------+----------------------+---------------------+
+
+.. seealso:: `BIND SOA <http://www.zytrax.com/books/dns/ch8/soa.html>`_
+
+BIND_MAX_CACHE_TIME
+^^^^^^^^^^^^^^^^^^^
+
+This variable controls the DNS Max Cache time in seconds. If empty or removed it will fallback to a sane default.
+
++--------------------------+----------------------+---------------------+
+| Name                     | Allowed values       | Default value       |
++==========================+======================+=====================+
+| ``BIND_MAX_CACHE_TIME``  | integer              | empty               |
++--------------------------+----------------------+---------------------+
+
+.. seealso:: `BIND SOA <http://www.zytrax.com/books/dns/ch8/soa.html>`_
+
+
+
+
 
 
 .. |br| raw:: html
